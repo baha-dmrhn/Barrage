@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Baha Baraj Doluluk Paneli</title>
+  <link rel="icon" type="image/png" href="/icons/icon-192.png">
+  <meta name="theme-color" content="#07539a">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Baha Baraj Doluluk Paneli">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="apple-touch-icon" sizes="192x192" href="/apple-touch-icon.png">
+  <link href="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta20/dist/css/tabler.min.css" rel="stylesheet">
+  <style>
+    :root { --baha-navy: #0b1d39; --baha-blue: #2d70ee; --baha-muted: #70809a; }
+    #loginScreen.login-screen { display: block !important; height: 100vh; min-height: 100vh; overflow: hidden; padding: 0; background: #fff; }
+    /* Tabler'ın d-none sınıfı login ekranını gerçekten gizleyebilsin. */
+    #loginScreen.login-screen.d-none { display: none !important; }
+    .login-layout { min-height: 100%; display: grid; grid-template-columns: 52.25% 47.75%; }
+    .login-brand-panel { position: relative; isolation: isolate; overflow: hidden; display: flex; flex-direction: column; justify-content: space-between; min-height: 100vh; padding: clamp(1.75rem, 4vw, 3.35rem) clamp(1.5rem, 6.8vw, 6rem); color: #fff; background: linear-gradient(145deg, #182f59 0%, var(--baha-navy) 72%); }
+    .login-brand-panel::before, .login-brand-panel::after { content: ""; position: absolute; z-index: -1; border: 1px solid rgba(101, 148, 236, .13); border-radius: 50%; pointer-events: none; }
+    .login-brand-panel::before { width: 58rem; height: 58rem; right: -31rem; bottom: -24rem; box-shadow: 0 0 0 6rem rgba(101, 148, 236, .035), 0 0 0 12rem rgba(101, 148, 236, .025); }
+    .login-brand-panel::after { width: 44rem; height: 44rem; right: -18rem; top: 8rem; }
+    .login-brand-content, .login-stats { position: relative; z-index: 1; }
+    .login-logo-card { display: flex; align-items: center; justify-content: center; width: 68px; height: 68px; margin-bottom: clamp(2rem, 8vh, 4.7rem); border-radius: 18px; background: #fff; box-shadow: 0 12px 28px rgba(0, 0, 0, .2); }
+    .login-logo-card img { width: 76px; height: 76px; object-fit: contain; }
+    .login-eyebrow, .login-kicker { margin: 0 0 1.25rem; color: #8eb2ff; font-size: .82rem; font-weight: 700; letter-spacing: .17em; }
+    .login-brand-title { max-width: 610px; margin: 0; color: #fff; font-size: clamp(3rem, 5.2vw, 5.5rem); font-weight: 400; letter-spacing: -.055em; line-height: .98; }
+    .login-brand-title span { color: #5f91ff; }
+    .login-brand-copy { max-width: 570px; margin: 2.2rem 0 0; color: #bdcbe5; font-size: clamp(1rem, 1.45vw, 1.25rem); line-height: 1.8; }
+    .login-stats { display: flex; gap: clamp(2rem, 5.3vw, 5.3rem); margin-top: 2.7rem; }
+    .login-stat-value { display: block; color: #fff; font-size: 1.5rem; font-weight: 700; line-height: 1; }
+    .login-stat-label { display: block; margin-top: .55rem; color: #8ea8d1; font-size: .75rem; }
+    .login-form-panel { display: flex; align-items: flex-start; justify-content: center; min-height: 100vh; padding: clamp(2.7rem, 6.5vh, 5rem) clamp(1.5rem, 6.9vw, 5rem); background: #fff; }
+    .login-form-wrap { width: min(100%, 430px); }
+    .login-mobile-brand, .install-app-button { display: none; }
+    .login-kicker { color: var(--baha-blue); font-size: .9rem; font-weight: 700; }
+    .login-form-title { margin: 0; color: #0d1f3b; font-size: clamp(1.8rem, 2.7vw, 2.6rem); font-weight: 400; letter-spacing: -.045em; line-height: 1.05; }
+    .login-form-subtitle { margin: .5rem 0 1.8rem; color: #71809a; font-size: 1rem; font-weight: 400; }
+    .login-field { margin-bottom: 1.1rem; }
+    .login-field label { display: block; margin-bottom: .5rem; color: #132340; font-size: 1rem; font-weight: 500; }
+    .login-input-wrap { position: relative; }
+    .login-input-wrap .form-control { height: 52px; border: 1px solid #d9e1ed; border-radius: 11px; padding: 0 2.8rem 0 2.5rem; color: #152744; font-size: 1rem; font-weight: 400; box-shadow: 0 2px 5px rgba(23, 48, 86, .04); }
+    .login-input-wrap .form-control:focus { border-color: #80a9ff; box-shadow: 0 0 0 4px rgba(45, 112, 238, .12); }
+    .login-input-wrap .form-control::placeholder { color: #a1adbe; }
+    .login-input-symbol { position: absolute; z-index: 2; top: 50%; left: .8rem; color: #91a0b6; font-size: 1.1rem; line-height: 1; transform: translateY(-50%); pointer-events: none; }
+    .password-toggle { position: absolute; z-index: 2; top: 50%; right: .8rem; width: 1.35rem; height: 1.35rem; border: 0; color: #7486a4; background: transparent; font-size: 1.1rem; transform: translateY(-50%); }
+    .password-toggle:hover { color: var(--baha-blue); }
+    .login-submit { display: flex; align-items: center; justify-content: center; gap: .5rem; width: 100%; height: 53px; margin-top: 1.5rem; border: 0; border-radius: 11px; color: #fff; background: var(--baha-blue); font-size: 1rem; font-weight: 700; box-shadow: 0 10px 17px rgba(45, 112, 238, .2); transition: transform .2s ease, background .2s ease; }
+    .login-submit:hover { color: #fff; background: #2262d8; transform: translateY(-1px); }
+    .login-submit:disabled { opacity: .7; transform: none; }
+    .login-note { margin: 1.3rem 0 0; color: #8492a8; font-size: .8rem; font-weight: 400; text-align: center; }
+    .login-error { margin-top: 1rem; text-align: center; }
+    @media (max-width: 900px) {
+      html, body { min-width: 0; }
+      #loginScreen.login-screen { min-height: 100dvh; overflow-y: auto; scrollbar-width: none; }
+      #loginScreen.login-screen::-webkit-scrollbar { display: none; }
+      .login-layout { display: block; min-height: 100dvh; }
+      .login-brand-panel {
+        display: block;
+        min-height: auto;
+        padding: calc(2rem + env(safe-area-inset-top)) 1.375rem 0;
+        color: var(--baha-navy);
+        background: #fff;
+      }
+      .login-brand-panel::before, .login-brand-panel::after,
+      .login-eyebrow, .login-brand-title, .login-brand-copy, .login-stats { display: none; }
+      .login-logo-lockup { display: flex; align-items: center; gap: .65rem; }
+      .login-logo-card {
+        flex: 0 0 auto;
+        width: 2.125rem;
+        height: 2.25rem;
+        margin: 0;
+        border-radius: .65rem;
+        box-shadow: 0 .4rem 1rem rgba(18, 43, 78, .12);
+      }
+      .login-logo-card img { width: 2rem; height: 2rem; }
+      .login-mobile-brand { display: inline; color: #153054; font-size: .625rem; font-weight: 500; }
+      .login-form-panel {
+        display: block;
+        min-height: auto;
+        padding: 2.15rem 1.375rem calc(1.25rem + env(safe-area-inset-bottom));
+      }
+      .login-form-wrap { width: 100%; max-width: none; }
+      .login-kicker {
+        margin-bottom: .55rem;
+        font-size: .5rem;
+        letter-spacing: .16em;
+      }
+      .login-form-title { font-size: 1.5rem; line-height: 1.05; }
+      .login-form-subtitle { margin: .2rem 0 1.15rem; font-size: .675rem; line-height: 1.4; }
+      .login-field { margin-bottom: .75rem; }
+      #loginForm .login-field:nth-child(2) { margin-bottom: 0; }
+      .login-field label { margin-bottom: .4rem; font-size: .675rem; line-height: 1.25; }
+      .login-input-wrap .form-control {
+        height: 2.55rem;
+        border-radius: .55rem;
+        padding: 0 2.45rem 0 2rem;
+        font-size: .675rem;
+        box-shadow: 0 1px 3px rgba(23, 48, 86, .025);
+      }
+      .login-input-symbol { left: .65rem; font-size: .8rem; }
+      .password-toggle { right: .6rem; width: 1.2rem; height: 1.2rem; padding: 0; }
+      .password-toggle svg { display: block; width: 1rem; height: 1rem; }
+      .login-submit {
+        height: 2.55rem;
+        margin-top: 1.05rem;
+        border-radius: .48rem;
+        font-size: .675rem;
+        box-shadow: 0 .4rem .8rem rgba(45, 112, 238, .14);
+      }
+      .login-error { margin-top: .65rem; font-size: .65rem; }
+      .login-note { margin-top: 1rem; font-size: .5rem; }
+      .install-app-button {
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 2rem;
+        margin-top: .75rem;
+        border: 1px solid var(--baha-blue);
+        border-radius: .45rem;
+        color: #0861d8;
+        background: #fff;
+        font-size: .625rem;
+        font-weight: 500;
+      }
+      .install-app-button:not([hidden]) { display: flex; }
+    }
+  </style>
+</head>
+<body>
+  <div id="loginScreen" class="page page-center login-screen">
+    <div class="login-layout">
+      <section class="login-brand-panel" aria-label="Baha Baraj tanıtımı">
+        <div class="login-brand-content">
+          <div class="login-logo-lockup">
+            <div class="login-logo-card"><img src="/icons/icon-192.png" width="76" height="76" alt="Baha Baraj logosu"></div>
+            <span class="login-mobile-brand">Baha Enerji</span>
+          </div>
+          <p class="login-eyebrow">BAHA BARAJ DOLULUK PANELİ</p>
+          <h1 class="login-brand-title">Baraj verileri,<br><span>tek ekranda.</span></h1>
+          <p class="login-brand-copy">EPİAŞ Şeffaflık Platformu verilerini sade, hızlı ve güvenli bir panelde takip edin.</p>
+        </div>
+        <div class="login-stats" aria-label="Panel özellikleri">
+          <div><span class="login-stat-value">Güncel</span><span class="login-stat-label">EPİAŞ verileri</span></div>
+          <div><span class="login-stat-value">4</span><span class="login-stat-label">kritik gösterge</span></div>
+        </div>
+      </section>
+      <section class="login-form-panel" aria-label="Giriş formu">
+        <div class="login-form-wrap">
+          <p class="login-kicker">GÜVENLİ ERİŞİM</p>
+          <h2 class="login-form-title">Tekrar hoş geldiniz</h2>
+          <p class="login-form-subtitle">EPİAŞ Şeffaflık Platformu hesabınızla devam edin.</p>
+          <form id="loginForm" autocomplete="on" novalidate>
+            <div class="login-field">
+              <label for="username">EPİAŞ e-posta adresi</label>
+              <div class="login-input-wrap"><span class="login-input-symbol" aria-hidden="true">@</span><input id="username" class="form-control" type="text" inputmode="email" autocomplete="username" placeholder="ornek@firma.com" required></div>
+            </div>
+            <div class="login-field">
+              <label for="password">Şifre</label>
+              <div class="login-input-wrap"><span class="login-input-symbol" aria-hidden="true">•</span><input id="password" class="form-control" type="password" autocomplete="current-password" placeholder="Şifreniz" required><button id="togglePassword" class="password-toggle" type="button" aria-label="Şifreyi göster" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2.5 12s3.5-5 9.5-5 9.5 5 9.5 5-3.5 5-9.5 5-9.5-5-9.5-5Z"/><circle cx="12" cy="12" r="2.5"/></svg></button></div>
+            </div>
+            <div id="loginError" class="login-error text-danger small d-none"></div>
+            <button id="loginButton" class="login-submit" type="submit">Panele giriş yap <span aria-hidden="true">→</span></button>
+          </form>
+          <p class="login-note">🔒 EPİAŞ şifreniz diskte veya tarayıcıda saklanmaz.</p>
+          <button id="installButton" class="install-app-button" type="button" hidden>Uygulamayı telefona yükle</button>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <div id="dashboard" class="page d-none">
+    <header class="navbar navbar-expand-md navbar-light"><div class="container-xl"><a class="navbar-brand d-flex align-items-center" href="#"><img src="/icons/icon-192.png" width="40" height="40" alt="Baha Baraj" class="me-2"><span>Baha Baraj</span></a><button id="logoutButton" class="btn btn-outline-secondary btn-sm" type="button">Çıkış yap</button></div></header>
+    <div class="page-wrapper"><div class="page-header"><div class="container-xl"><div class="row g-2 align-items-center"><div class="col"><h2 class="page-title">Baha Baraj Doluluk Paneli</h2><div class="text-secondary mt-1">EPİAŞ Şeffaflık Platformu güncel verileri</div></div><div class="col-auto ms-auto"><button id="refreshButton" class="btn btn-primary" type="button">Verileri yenile</button></div></div></div></div>
+      <div class="page-body"><div class="container-xl"><div id="alert" class="alert d-none" role="alert"></div>
+        <div class="row row-deck row-cards mb-3"><div class="col-sm-6 col-lg-3"><div class="card"><div class="card-body"><div class="subheader">Toplam baraj</div><div id="total" class="h1 mb-0">-</div></div></div></div><div class="col-sm-6 col-lg-3"><div class="card"><div class="card-body"><div class="subheader">Ortalama doluluk</div><div id="average" class="h1 mb-0">-</div></div></div></div><div class="col-sm-6 col-lg-3"><div class="card"><div class="card-body"><div class="subheader">En yüksek</div><div id="highest" class="h3 mb-0">-</div></div></div></div><div class="col-sm-6 col-lg-3"><div class="card"><div class="card-body"><div class="subheader">En düşük</div><div id="lowest" class="h3 mb-0">-</div></div></div></div></div>
+        <div class="card"><div class="card-header"><h3 class="card-title">Baraj listesi</h3><div id="status" class="card-actions text-secondary"></div></div><div class="table-responsive"><table class="table table-vcenter card-table table-striped"><thead><tr><th>Baraj</th><th>Havza</th><th>Aktif doluluk</th><th>Veri tarihi</th></tr></thead><tbody id="tableBody"></tbody></table></div></div>
+        <p class="text-secondary mt-3 small">EPİAŞ baraj verileri günlük yayımlanır. Oturum, 30 dakika işlem yapılmadığında kapanır.</p>
+      </div></div>
+    </div>
+  </div>
+  <script>
+    const $ = id => document.getElementById(id), number = new Intl.NumberFormat('tr-TR', {maximumFractionDigits: 2});
+    const showLogin = () => { $('password').value=''; $('password').type='password'; $('togglePassword').setAttribute('aria-label','Şifreyi göster'); $('togglePassword').setAttribute('aria-pressed','false'); $('loginError').classList.add('d-none'); $('loginScreen').classList.remove('d-none'); $('dashboard').classList.add('d-none'); };
+    const showDashboard = () => { $('loginScreen').classList.add('d-none'); $('dashboard').classList.remove('d-none'); load(); };
+    function alert(message, kind) { const el = $('alert'); el.textContent = message; el.className = `alert alert-${kind}`; }
+    function summary(items) { const valid = items.filter(x => Number.isFinite(Number(x.activeFullnessAmount))), sorted = [...valid].sort((a,b) => b.activeFullnessAmount-a.activeFullnessAmount); $('total').textContent = number.format(items.length); $('average').textContent = valid.length ? `%${number.format(valid.reduce((s,x)=>s+Number(x.activeFullnessAmount),0)/valid.length)}` : '-'; $('highest').textContent = sorted.length ? `${sorted[0].dam} · %${number.format(sorted[0].activeFullnessAmount)}` : '-'; $('lowest').textContent = sorted.length ? `${sorted.at(-1).dam} · %${number.format(sorted.at(-1).activeFullnessAmount)}` : '-'; }
+    function render(items) { const body = $('tableBody'); body.replaceChildren(); if (!items.length) { body.innerHTML = '<tr><td colspan="4" class="text-center text-secondary py-5">Kayıt bulunamadı.</td></tr>'; return; } items.sort((a,b)=>b.activeFullnessAmount-a.activeFullnessAmount).forEach(x => { const row=document.createElement('tr'); [x.dam,x.basin,x.activeFullnessAmount == null ? '-' : `%${number.format(x.activeFullnessAmount)}`,x.date ? new Date(x.date).toLocaleDateString('tr-TR') : '-'].forEach(value => {const cell=document.createElement('td');cell.textContent=value;row.append(cell);});body.append(row); }); }
+    async function load() {
+      const button = $('refreshButton');
+      button.disabled = true;
+      $('status').textContent = 'Yükleniyor...';
+      try {
+        const response = await fetch('/api/active-fullness', {credentials: 'same-origin'});
+        const payload = await response.json();
+        if (!response.ok) {
+          if (response.status === 401) {
+            showLogin();
+            const loginError = $('loginError');
+            loginError.textContent = payload.error || 'EPİAŞ oturumu doğrulanamadı.';
+            loginError.classList.remove('d-none');
+            return;
+          }
+          throw new Error(payload.error || 'Veriler alınamadı.');
+        }
+        $('alert').className = 'alert d-none';
+        render(payload.items);
+        summary(payload.items);
+        $('status').textContent = `${payload.items.length} kayıt`;
+      } catch (e) {
+        alert(e.message || 'Veriler alınamadı.', 'warning');
+        $('status').textContent = 'Veri yok';
+      } finally {
+        button.disabled = false;
+      }
+    }
+    $('loginForm').addEventListener('submit', async e => {
+      e.preventDefault();
+      const button = $('loginButton'), error = $('loginError'), username = $('username').value.trim(), password = $('password').value;
+      error.classList.add('d-none');
+      if (!username || !password) { error.textContent = 'E-posta ve şifreyi eksiksiz girin.'; error.classList.remove('d-none'); return; }
+      const controller = typeof AbortController === 'function' ? new AbortController() : null;
+      const timeout = setTimeout(() => controller?.abort(), 25000);
+      button.disabled = true; button.setAttribute('aria-busy', 'true'); button.innerHTML = 'Giriş yapılıyor…';
+      try {
+        const response = await fetch('/api/login', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({username, password}), credentials:'same-origin', ...(controller ? {signal:controller.signal} : {})});
+        const payload = await response.json();
+        if (!response.ok) throw new Error(payload.error || 'Giriş yapılamadı.');
+        $('password').value = ''; showDashboard();
+      } catch (e) {
+        error.textContent = e.name === 'AbortError' ? 'EPİAŞ bağlantısı zaman aşımına uğradı. Lütfen tekrar deneyin.' : (e.message || 'Giriş yapılamadı.');
+        error.classList.remove('d-none');
+      } finally {
+        clearTimeout(timeout); button.disabled = false; button.removeAttribute('aria-busy'); button.innerHTML = 'Panele giriş yap <span aria-hidden="true">→</span>';
+      }
+    });
+    $('togglePassword').addEventListener('click', () => { const input=$('password'), visible=input.type==='text'; input.type=visible?'password':'text'; $('togglePassword').setAttribute('aria-label',visible?'Şifreyi göster':'Şifreyi gizle'); $('togglePassword').setAttribute('aria-pressed',String(!visible)); });
+    let deferredInstallPrompt = null;
+    const installButton = $('installButton');
+    const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+    if (!isStandalone) installButton.hidden = false;
+    window.addEventListener('beforeinstallprompt', event => {
+      event.preventDefault();
+      deferredInstallPrompt = event;
+      installButton.hidden = false;
+    });
+    installButton.addEventListener('click', async () => {
+      if (deferredInstallPrompt) {
+        deferredInstallPrompt.prompt();
+        await deferredInstallPrompt.userChoice;
+        deferredInstallPrompt = null;
+        return;
+      }
+      const message = /iphone|ipad|ipod/i.test(navigator.userAgent)
+        ? 'Safari paylaş menüsünden “Ana Ekrana Ekle” seçeneğine dokunun.'
+        : 'Tarayıcı menüsünden “Uygulamayı yükle” veya “Ana ekrana ekle” seçeneğini kullanın.';
+      window.alert(message);
+    });
+    window.addEventListener('appinstalled', () => { installButton.hidden = true; deferredInstallPrompt = null; });
+    $('logoutButton').addEventListener('click', async () => { await fetch('/api/logout',{method:'POST', credentials:'same-origin'}); showLogin(); });
+    async function restoreSession() { try { const response=await fetch('/api/session',{credentials:'same-origin'}), payload=await response.json(); if(response.ok && payload.authenticated) showDashboard(); else showLogin(); } catch { showLogin(); } }
+    $('refreshButton').addEventListener('click',load); restoreSession();
+  </script>
+</body>
+</html>
